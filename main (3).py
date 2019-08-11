@@ -1,3 +1,4 @@
+#un calculatrice
 import pygame
 import time
 class main():
