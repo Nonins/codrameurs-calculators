@@ -2,6 +2,7 @@ import pygame
 import time
 import json
 class main():
+
     def __init__(self):
         print("---chargement---")
         pygame.init()
@@ -28,48 +29,11 @@ class main():
         self.stade_calcule=1
         pygame.display.set_caption("Codrameur's calculators ")
         print("---chargement ruessie---")
+
     def menu(self):
         #code du menu
         bandeau=pygame.image.load("textur.png")
         bandeau.convert()
-        def btn_presser(btn):
-            e=self.coorde_btn[btn]["id"]
-            if e =="res":
-                self.res_text=self.police.render(calculer(),True,(10,95,69))
-                return
-            elif e =="X" or e=="/" or e=="+" or e=="-" :
-                self.operateur=e 
-                self.stade_calcule=2
-            elif e == None :
-                self.nb_1=""
-                self.nb_2=""
-                self.operateur=""
-                self.res =self.nb_1
-                self.Erreur
-            else :
-                print('nb')
-                if self.stade_calcule==1:
-                    self.nb_1=self.nb_1+e
-                elif self.stade_calcule==2:       
-                    self.nb_2=self.nb_2+e
-            self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
-        def calculer():
-            self.nb_1=int(self.nb_1)
-            self.nb_2=int(self.nb_2)
-            self.nb_2=int(self.nb_1*2)
-            if not self.nb_2:
-                print("test")
-            if self.operateur == "+":
-                return str(self.nb_1+self.nb_2)
-            elif self.operateur == "-":
-                return str(self.nb_1-self.nb_2)
-            elif self.operateur == "X":
-                return str(self.nb_1*self.nb_2)
-            elif self.operateur == "/" and str(self.nb_2) == "0":
-                str(self.Erreur) =="Erreur"
-                return str(self.Erreur)
-            elif self.operateur == "/":
-                return str(self.nb_1/self.nb_2)
         launched = True
         while launched:
         #boc principale
@@ -86,10 +50,71 @@ class main():
                                 if self.coorde_btn[y]["x2"]>event.pos[0]:
                                     if self.coorde_btn[y]["y2"]>event.pos[1]:
                                         self.btn_relacher=False
-                                        btn_presser(y)                  
+                                        self.btn_presser(y)
             self.surface.blit(bandeau,(0,0))
             self.surface.blit(self.res_text,(10,100)) 
             pygame.display.flip() 
             pygame.display.set_mode((400,550),pygame.NOFRAME)
+    
+    def btn_presser(self, btn):
+        e=self.coorde_btn[btn]["id"]
+        if e =="res":
+            if self.nb_1 == "" or self.nb_2 == "":
+                return
+            self.res_text=self.police.render(self.calculer(),True,(10,95,69))
+            self.nb_1 = self.res
+            self.nb_2 = ""
+            self.stade_calcule=3
+            return
+        elif e =="X" or e=="/" or e=="+" or e=="-" :
+            if self.nb_1 == "":
+                return
+            self.operateur=e 
+            self.stade_calcule=2
+        elif e == None :
+            self.nb_1=""
+            self.nb_2=""
+            self.operateur=""
+            self.Erreur=""
+            self.stade_calcule=1
+        else :
+            print('nb')
+            if self.stade_calcule==1:
+                self.nb_1=self.nb_1+e
+            elif self.stade_calcule==2:       
+                self.nb_2=self.nb_2+e
+            elif self.stade_calcule==3:
+                self.nb_2=""
+                self.nb_1=e
+                self.operateur=""
+                self.res_text=self.police.render(self.nb_1,True,(10,95,69))
+                self.stade_calcule=1
+                return
+        self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
+
+    def calculer(self):
+        self.nb_1=float(self.nb_1)
+        if int(self.nb_1) == self.nb_1:
+            self.nb_1=int(self.nb_1)
+        
+        self.nb_2=float(self.nb_2)
+        if int(self.nb_2) == self.nb_2:
+            self.nb_2=int(self.nb_2)
+        
+        if self.operateur == "+":
+            self.res = str(self.nb_1+self.nb_2)
+            return str(self.nb_1+self.nb_2)
+        elif self.operateur == "-":
+            self.res = str(self.nb_1-self.nb_2)
+            return str(self.nb_1-self.nb_2)
+        elif self.operateur == "X":
+            self.res = str(self.nb_1*self.nb_2)
+            return str(self.nb_1*self.nb_2)
+        elif self.operateur == "/" and str(self.nb_2) == "0":
+            return self.Erreur
+        elif self.operateur == "/":
+            self.res = str(self.nb_1/self.nb_2)
+            return str(self.nb_1/self.nb_2)
+
 instance=main()
 instance.menu()
