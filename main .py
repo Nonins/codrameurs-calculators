@@ -13,6 +13,8 @@ class main():
         self.nb_2=""
         self.res= ""
         self.Erreur= "Error"
+        self.point = 0
+        self.point1 = 0
         self.btn_relacher=True
         with open("cord_btn.json") as f:
             self.coorde_btn = json.load(f)
@@ -64,6 +66,8 @@ class main():
             self.res_text=self.police.render(self.calculer(),True,(10,95,69))
             self.nb_1 = self.res
             self.nb_2 = ""
+            self.point = 0
+            self.point1 = 0
             self.stade_calcule=3
             return
         elif e =="X" or e=="/" or e=="+" or e=="-" :
@@ -76,22 +80,38 @@ class main():
             self.nb_2=""
             self.operateur=""
             self.Erreur=""
+            self.point= 0
+            self.point1 = 0
             self.stade_calcule=1
         elif e == "." and self.stade_calcule == 1 :
+            self.point += 1
+            if self.point >= 2:
+                return
             self.nb_1 = str(self.nb_1)
             self.nb_1 = self.nb_1+e
+            if self.nb_1 == ".":
+                self.nb_1 = "0."
+                self.res_text=self.police.render(self.nb_1,True,(10,95,69))
+                return
             self.res_text=self.police.render(self.nb_1,True,(10,95,69))
             return
         elif e == "." and self.stade_calcule == 2 :
+            self.point1 += 1
+            if self.point1 >= 2:
+                return
             self.nb_2 = str(self.nb_2)
             self.nb_2 = self.nb_2+e
+            if self.nb_2 == ".":
+                self.nb_2 = "0."
+                self.res_text=self.police.render(self.nb_2,True,(10,95,69))
+                return
             self.res_text=self.police.render(self.nb_2,True,(10,95,69))
             return 
         else :
             print('nb')
             if self.stade_calcule==1:
                 self.nb_1=self.nb_1+e
-            elif self.stade_calcule==2:       
+            elif self.stade_calcule==2:    
                 self.nb_2=self.nb_2+e
             elif self.stade_calcule==3:
                 self.nb_2=""
