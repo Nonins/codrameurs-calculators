@@ -77,6 +77,16 @@ class main():
             self.operateur=""
             self.Erreur=""
             self.stade_calcule=1
+        elif e == "." and self.stade_calcule == 1 :
+            self.nb_1 = str(self.nb_1)
+            self.nb_1 = self.nb_1+e
+            self.res_text=self.police.render(self.nb_1,True,(10,95,69))
+            return
+        elif e == "." and self.stade_calcule == 2 :
+            self.nb_2 = str(self.nb_2)
+            self.nb_2 = self.nb_2+e
+            self.res_text=self.police.render(self.nb_2,True,(10,95,69))
+            return 
         else :
             print('nb')
             if self.stade_calcule==1:
