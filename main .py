@@ -117,6 +117,8 @@ class main():
                 self.nb_2=""
                 self.nb_1=e
                 self.operateur=""
+                if self.nb_1 == ".":
+                    self.nb_1 = "0."
                 self.res_text=self.police.render(self.nb_1,True,(10,95,69))
                 self.stade_calcule=1
                 return
