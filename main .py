@@ -6,6 +6,7 @@ class main():
     def __init__(self):
         print("---chargement---")
         pygame.init()
+        self.launched=True
         self.surface = pygame.display.set_mode((400,550),pygame.NOFRAME)
         self.surface.fill((255,255,255))
         self.nb_1=""
@@ -28,12 +29,9 @@ class main():
         #code du menu
         bandeau=pygame.image.load("textur.png")
         bandeau.convert()
-        launched = True
         while launched:
         #boc principale
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    launched=False
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.btn_relacher=True
                 if event.type==pygame.MOUSEBUTTONDOWN and self.btn_relacher==True:
@@ -98,8 +96,10 @@ class main():
                 self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
                 return
             self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
-            return 
-        else :
+            return
+        elif e == "quit":
+             self.launched=False
+        else:
             print('nb')
             if self.stade_calcule==1:
                 self.nb_1=self.nb_1+e
