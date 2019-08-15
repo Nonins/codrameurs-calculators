@@ -18,14 +18,6 @@ class main():
         self.btn_relacher=True
         with open("cord_btn.json") as f:
             self.coorde_btn = json.load(f)
-        self.coorde_btn_event:{
-            "QUITTER":{
-                "x1":300,
-                "y1":57,
-                "x2":387,
-                "y2":75,
-            },
-        }
         self.police=pygame.font.SysFont("arial",60)
         self.res_text=self.police.render("",True,(10,95,69))
         self.stade_calcule=1
@@ -45,7 +37,7 @@ class main():
                 if event.type == pygame.MOUSEBUTTONUP:
                     self.btn_relacher=True
                 if event.type==pygame.MOUSEBUTTONDOWN and self.btn_relacher==True:
-                    for x in range(19):
+                    for x in range(20):
                         y=str(x+1)
                         if self.coorde_btn[y]["x1"]<event.pos[0]:
                             if self.coorde_btn[y]["y1"]<event.pos[1]:
@@ -79,16 +71,16 @@ class main():
             self.nb_1=""
             self.nb_2=""
             self.operateur=""
-            self.Erreur=""
+            self.Erreur="" 
             self.point= 0
-            self.point1 = 0
+            self.point1 = 0 
             self.stade_calcule=1
         elif e == "." and self.stade_calcule == 1 :
             self.point += 1
             if self.point >= 2:
                 return
             self.nb_1 = str(self.nb_1)
-            self.nb_1 = self.nb_1+e
+            self.nb_1 = self.nb_1+e 
             if self.nb_1 == ".":
                 self.nb_1 = "0."
                 self.res_text=self.police.render(self.nb_1,True,(10,95,69))
@@ -103,7 +95,7 @@ class main():
             self.nb_2 = self.nb_2+e
             if self.nb_2 == ".":
                 self.nb_2 = "0."
-                self.res_text=self.police.render(self.nb_2,True,(10,95,69))
+                self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
                 return
             self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
             return 
