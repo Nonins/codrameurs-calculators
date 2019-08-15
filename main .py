@@ -67,6 +67,8 @@ class main():
             self.nb_1 = self.res
             self.nb_2 = ""
             self.stade_calcule=3
+            self.point = 0
+            self.point1 = 0
             return
         elif e =="X" or e=="/" or e=="+" or e=="-" :
             if self.nb_1 == "":
@@ -103,7 +105,7 @@ class main():
                 self.nb_2 = "0."
                 self.res_text=self.police.render(self.nb_2,True,(10,95,69))
                 return
-            self.res_text=self.police.render(self.nb_2,True,(10,95,69))
+            self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
             return 
         else :
             print('nb')
