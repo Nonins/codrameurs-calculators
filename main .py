@@ -1,6 +1,7 @@
 import pygame
 import time
 import json
+
 class main():
 
     def __init__(self):
@@ -27,9 +28,10 @@ class main():
 
     def menu(self):
         #code du menu
-        bandeau=pygame.image.load("textur.png")
+        bandeau=pygame.image.load("texture.png")
         bandeau.convert()
-        while launched:
+        self.launched = True
+        while self.launched:
         #boc principale
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONUP:
@@ -53,7 +55,9 @@ class main():
         if e =="res":
             if self.nb_1 == "" or self.nb_2 == "":
                 return
-            self.res_text=self.police.render(self.calculer(),True,(10,95,69))
+            self.calculer()
+            self.arrondir()
+            self.res_text=self.police.render(str(self.res),True,(10,95,69))
             self.nb_1 = self.res
             self.nb_2 = ""
             self.stade_calcule=3
@@ -88,9 +92,9 @@ class main():
         elif e == "." and self.stade_calcule == 2 :
             self.point1 += 1
             if self.point1 >= 2:
-                return
+                return 
             self.nb_2 = str(self.nb_2)
-            self.nb_2 = self.nb_2+e
+            self.nb_2 = self.nb_2+e 
             if self.nb_2 == ".":
                 self.nb_2 = "0."
                 self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
@@ -98,9 +102,8 @@ class main():
             self.res_text=self.police.render(str(self.nb_1)+str(self.operateur)+str(self.nb_2),True,(10,95,69))
             return
         elif e == "quit":
-             self.launched=False
+             self.launched=False 
         else:
-            print('nb')
             if self.stade_calcule==1:
                 self.nb_1=self.nb_1+e
             elif self.stade_calcule==2:    
@@ -119,27 +122,44 @@ class main():
 
     def calculer(self):
         self.nb_1=float(self.nb_1)
-        if int(self.nb_1) == self.nb_1:
-            self.nb_1=int(self.nb_1)
-        
         self.nb_2=float(self.nb_2)
-        if int(self.nb_2) == self.nb_2:
-            self.nb_2=int(self.nb_2)
-        
+       
         if self.operateur == "+":
-            self.res = str(self.nb_1+self.nb_2)
-            return str(self.nb_1+self.nb_2)
-        elif self.operateur == "-":
-            self.res = str(self.nb_1-self.nb_2)
-            return str(self.nb_1-self.nb_2)
-        elif self.operateur == "X":
-            self.res = str(self.nb_1*self.nb_2)
-            return str(self.nb_1*self.nb_2)
-        elif self.operateur == "/" and str(self.nb_2) == "0":
+            self.res = self.nb_1+self.nb_2
+            return self.res
+        if self.operateur == "-":
+            self.res = self.nb_1-self.nb_2
+            return self.res
+        if self.operateur == "X":
+            self.res = self.nb_1*self.nb_2
+            return self.res
+        if self.operateur == "/" and self.nb_2 == 0:
             return self.Erreur
-        elif self.operateur == "/":
-            self.res = str(self.nb_1/self.nb_2)
-            return str(self.nb_1/self.nb_2)
+        if self.operateur == "/":
+            self.res = self.nb_1/self.nb_2
+            return self.res
+    
+    def arrondir(self):
+        split_res = str(self.res).split(".")
+        if len(split_res) == 1:
+            return
+
+        nb_apres_virgule = 0
+        split_nb_1 = str(self.nb_1).split(".")
+        if len(split_nb_1) > 1:
+            nb_apres_virgule_nb_1 = len(split_nb_1[1])
+            if nb_apres_virgule < nb_apres_virgule_nb_1:
+                nb_apres_virgule = nb_apres_virgule_nb_1
+
+        split_nb_2 = str(self.nb_2).split(".")
+        if len(split_nb_2) > 1:
+            nb_apres_virgule_nb_2 = len(split_nb_2[1])
+            if nb_apres_virgule < nb_apres_virgule_nb_2:
+                nb_apres_virgule = nb_apres_virgule_nb_2
+
+        self.res = round(self.res, nb_apres_virgule)
+        if int(self.res) == self.res:
+            self.res = int(self.res)
 
 instance=main()
 instance.menu()
