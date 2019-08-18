@@ -17,6 +17,7 @@ class main():
         self.Erreur= "Error"
         self.point = 0
         self.point1 = 0
+        self.Deplacer = 10
         self.btn_relacher=True
         with open("cord_btn.json") as f:
             self.coorde_btn = json.load(f)
@@ -45,8 +46,13 @@ class main():
                                     if self.coorde_btn[y]["y2"]>event.pos[1]:
                                         self.btn_relacher=False
                                         self.btn_presser(y)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RIGHT:
+                        self.Deplacer_droite()
+                    if event.key == pygame.K_LEFT:
+                        self.Deplacer_gauche()
             self.surface.blit(bandeau,(0,0))
-            self.surface.blit(self.res_text,(10,100)) 
+            self.surface.blit(self.res_text,(self.Deplacer,100)) 
             pygame.display.flip() 
             pygame.display.set_mode((400,550),pygame.NOFRAME)
     
@@ -160,6 +166,10 @@ class main():
         self.res = round(self.res, nb_apres_virgule)
         if int(self.res) == self.res:
             self.res = int(self.res)
+    def Deplacer_droite(self):
+        self.Deplacer-=4
+    def Deplacer_gauche(self):
+        self.Deplacer+=4
 
 instance=main()
 instance.menu()
