@@ -17,7 +17,8 @@ class main():
         self.Erreur= "Error"
         self.point = 0
         self.point1 = 0
-        self.Deplacer = 10
+        self.Deplacer = 0
+        self.compteur = 1
         self.btn_relacher=True
         with open("cord_btn.json") as f:
             self.coorde_btn = json.load(f)
@@ -25,7 +26,6 @@ class main():
         self.res_text=self.police.render("",True,(10,95,69))
         self.stade_calcule=1
         pygame.display.set_caption("Codrameur's calculators ")
-        print("---chargement ruessie---")
 
     def menu(self):
         #code du menu
@@ -49,8 +49,13 @@ class main():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
                         self.Deplacer_droite()
+                        self.compteur -=1
                     if event.key == pygame.K_LEFT:
-                        self.Deplacer_gauche()
+                        if self.compteur<1:
+                            self.Deplacer_gauche()
+                            compteur+=1
+                        if self.Deplacer >= 0:
+                            compteur+=1
             self.surface.blit(bandeau,(0,0))
             self.surface.blit(self.res_text,(self.Deplacer,100)) 
             pygame.display.flip() 
@@ -75,7 +80,7 @@ class main():
                 return
             self.operateur=e 
             self.stade_calcule=2
-        elif e == None :
+        elif e == "supr" :
             self.nb_1=""
             self.nb_2=""
             self.operateur=""
@@ -83,6 +88,11 @@ class main():
             self.point= 0
             self.point1 = 0 
             self.stade_calcule=1
+        elif e == "supr1":
+            if self.stade_calcule == 1:
+                self.nb_1=self.nb_1[0:len(self.nb_1)-2]
+            elif self.stade_calcule == 2:
+                self.nb_2=self.nb_2[0:len(self.nb_2)-2]
         elif e == "." and self.stade_calcule == 1 :
             self.point += 1
             if self.point >= 2:
@@ -112,8 +122,12 @@ class main():
         else:
             if self.stade_calcule==1:
                 self.nb_1=self.nb_1+e
+                if len(self.nb_1)>= 11:
+                    self.Deplacer_droite()
             elif self.stade_calcule==2:    
                 self.nb_2=self.nb_2+e
+                if len(self.nb_2)>= 11:
+                    self.Deplacer_gauche()
             elif self.stade_calcule==3:
                 self.nb_2=""
                 self.nb_1=e
@@ -167,9 +181,9 @@ class main():
         if int(self.res) == self.res:
             self.res = int(self.res)
     def Deplacer_droite(self):
-        self.Deplacer-=4
+        self.Deplacer-=28
     def Deplacer_gauche(self):
-        self.Deplacer+=4
-
+        self.Deplacer+=28 
+    
 instance=main()
 instance.menu()
