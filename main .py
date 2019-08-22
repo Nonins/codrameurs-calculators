@@ -49,13 +49,8 @@ class main():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
                         self.Deplacer_droite()
-                        self.compteur -=1
                     if event.key == pygame.K_LEFT:
-                        if self.compteur<1:
-                            self.Deplacer_gauche()
-                            compteur+=1
-                        if self.Deplacer >= 0:
-                            compteur+=1
+                        elf.Deplacer_gauche()
             self.surface.blit(bandeau,(0,0))
             self.surface.blit(self.res_text,(self.Deplacer,100)) 
             pygame.display.flip() 
@@ -89,10 +84,16 @@ class main():
             self.point1 = 0 
             self.stade_calcule=1
         elif e == "supr1":
+            if self.stade_calcule == 1 and self.nb_1=="":
+                return
             if self.stade_calcule == 1:
-                self.nb_1=self.nb_1[0:len(self.nb_1)-2]
+                self.nb_1=self.nb_1[0:len(self.nb_1)-1]
             elif self.stade_calcule == 2:
-                self.nb_2=self.nb_2[0:len(self.nb_2)-2]
+                if nb_2 =="":
+                    self.operateur=""
+                    self.stade_calcule=1
+                else:
+                    self.nb_2=self.nb_2[0:len(self.nb_2)-1]
         elif e == "." and self.stade_calcule == 1 :
             self.point += 1
             if self.point >= 2:
@@ -183,7 +184,7 @@ class main():
     def Deplacer_droite(self):
         self.Deplacer-=28
     def Deplacer_gauche(self):
-        self.Deplacer+=28 
+        self.Deplacer+=28
     
 instance=main()
 instance.menu()
